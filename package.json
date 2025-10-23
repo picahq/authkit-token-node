@@ -1,14 +1,19 @@
 {
   "name": "@picahq/authkit-token",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Secure token generation for Pica AuthKit using Node.js",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "test": "jest --coverage"
   },
+  "homepage": "https://docs.picaos.com/authkit",
+  "bugs": {
+    "url": "https://github.com/picahq/authkit-token/issues"
+  },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "git+https://github.com/picahq/authkit-token.git"
   },
   "keywords": [
     "pica",
@@ -45,7 +50,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "35ff51f0afc618c5413ef9bab778f4dcf582b8ab",
-  "homepage": "https://picaos.com",
-  "documentation": "https://docs.picaos.com/authkit"
+  "gitHead": "35ff51f0afc618c5413ef9bab778f4dcf582b8ab"
 }
