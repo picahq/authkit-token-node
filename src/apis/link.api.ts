@@ -97,7 +97,7 @@ async function paginateAuthkitConnections(
     pages: 1,
     total,
     requestId: latestResponse.requestId, // Use the requestId from the latest response
-    isWhiteList: false, // Default value, will be updated by createEventLinkTokenApi
+    isWhiteLabel: false, // Default value, will be updated by createEventLinkTokenApi
   };
 }
 
@@ -133,7 +133,7 @@ export const createEventLinkTokenApi = async (
 ) => {
   try {
     // Fetch user whitelist status (doesn't fail if endpoint fails)
-    const isWhiteList = await fetchUserWhitelistStatus(url, headers);
+    const isWhiteLabel = await fetchUserWhitelistStatus(url, headers);
 
     // Fetch all authkit connections with pagination support
     const authkitResponse = await paginateAuthkitConnections(
@@ -143,10 +143,10 @@ export const createEventLinkTokenApi = async (
       { limit: 100, maxConcurrentRequests: 3, maxRetries: 3 }
     );
 
-    // Add isWhiteList to the response
+    // Add isWhiteLabel to the response
     return {
       ...authkitResponse,
-      isWhiteList,
+      isWhiteLabel,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {
