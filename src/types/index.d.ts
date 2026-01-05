@@ -210,7 +210,7 @@ export interface AuthkitResponse {
   pages: number;
   page: number;
   requestId: number;
-  isWhiteList: boolean;
+  isWhiteLabel: boolean;
 }
 
 export interface ConnectorPaginationOptions {
