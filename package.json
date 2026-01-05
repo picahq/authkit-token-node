@@ -1,6 +1,6 @@
 {
   "name": "@picahq/authkit-token",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Secure token generation for Pica AuthKit using Node.js",
   "main": "dist/index.js",
   "scripts": {
