@@ -3,6 +3,7 @@ import {
   CreateEventLinkPayload,
   AuthkitResponse,
   ConnectorPaginationOptions,
+  UserFlags,
 } from '../types';
 
 /**
@@ -96,7 +97,33 @@ async function paginateAuthkitConnections(
     pages: 1,
     total,
     requestId: latestResponse.requestId, // Use the requestId from the latest response
+    isWhiteList: false, // Default value, will be updated by createEventLinkTokenApi
   };
+}
+
+/**
+ * Fetches user whitelist status from /v1/users/flags endpoint
+ * @param url - Base URL for the API
+ * @param headers - Request headers
+ * @returns Promise with boolean indicating whitelist status, defaults to false on error
+ */
+async function fetchUserWhitelistStatus(
+  url: string,
+  headers: Record<string, string>,
+): Promise<boolean> {
+  try {
+    const response = await axios.get<UserFlags>(
+      `${url}/v1/users/flags`,
+      { headers }
+    );
+    
+    // Extract authkitWhitelist directly from response, default to false if not present
+    return response.data?.authkitWhitelist ?? false;
+  } catch (error) {
+    // If the endpoint fails, we don't fail the whole thing, just return false
+    console.warn('Failed to fetch user whitelist status, defaulting to false:', error);
+    return false;
+  }
 }
 
 export const createEventLinkTokenApi = async (
@@ -105,6 +132,8 @@ export const createEventLinkTokenApi = async (
   payload?: CreateEventLinkPayload,
 ) => {
   try {
+    // Fetch user whitelist status (doesn't fail if endpoint fails)
+    const isWhiteList = await fetchUserWhitelistStatus(url, headers);
 
     // Fetch all authkit connections with pagination support
     const authkitResponse = await paginateAuthkitConnections(
@@ -114,7 +143,11 @@ export const createEventLinkTokenApi = async (
       { limit: 100, maxConcurrentRequests: 3, maxRetries: 3 }
     );
 
-    return authkitResponse;
+    // Add isWhiteList to the response
+    return {
+      ...authkitResponse,
+      isWhiteList,
+    };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return error.response?.data;

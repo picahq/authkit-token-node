@@ -210,12 +210,20 @@ export interface AuthkitResponse {
   pages: number;
   page: number;
   requestId: number;
+  isWhiteList: boolean;
 }
 
 export interface ConnectorPaginationOptions {
   limit?: number;
   maxConcurrentRequests?: number;
   maxRetries?: number;
+}
+
+export interface UserFlags {
+  accessList: string[];
+  authkitWhitelist: boolean;
+  earlyAccess: string[];
+  completedQuickstart: boolean;
 }
 
 
